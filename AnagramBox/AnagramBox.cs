@@ -13,31 +13,31 @@ namespace AnagramBox
     public partial class AnagramBox: UserControl
     {
 
-       static int numberBoxes = 4;
-        static Size size = new Size(20, 20);
-      static  RichTextBox[] textBoxes;
-       static string anagramText, shuffledText;
+       static int numberBoxes = 4;  //Default number of boxes
+        static Size size = new Size(20, 20);  //Default size of a box
+      static  RichTextBox[] textBoxes;     //Array of all boxes
+       static string anagramText, shuffledText;   //anagramText = Unscrambled, shuffledText = Scrambled
         
         
         public AnagramBox()
         {
             InitializeComponent();
-            this.Size = new Size(size.Width * numberBoxes, size.Height);
+            this.Size = new Size(size.Width * numberBoxes, size.Height);   //Makes the size of the whole control equal to all boxes combined together
            
-            CreateBoxes();
+            CreateBoxes();   //Method to display all boxes
         }
 
-        public void CreateBoxes()
+        public void CreateBoxes()   //Method to display all boxes
         {
-            this.Controls.Clear();
-            textBoxes = new RichTextBox[numberBoxes];
-            size = new Size(this.Size.Width / numberBoxes, size.Height);
-            for (int i = 0; i < numberBoxes; i++)
+            this.Controls.Clear();   //Removes all existing boxes
+            textBoxes = new RichTextBox[numberBoxes];           
+            size = new Size(this.Size.Width / numberBoxes, size.Height);        //Sets the size of each box so that they fit the control completely
+            for (int i = 0; i < numberBoxes; i++)                           //For loop to initialize all boxes
             {
                 textBoxes[i] = new RichTextBox();
                 textBoxes[i].Size = size;
                 textBoxes[i].Visible = true;
-                textBoxes[i].MaxLength = 1;
+                textBoxes[i].MaxLength = 1;                 //We want one character in each box
                 textBoxes[i].ReadOnly = false;
                 textBoxes[i].Font = this.Font;
                 textBoxes[i].Multiline = false;
@@ -47,16 +47,16 @@ namespace AnagramBox
             }
         }
 
-        public void Shuffler()
+        public void Shuffler()              //Method to shuffle the text
         {
-            shuffledText = anagramText.ToCharArray().Shuffle();
-            DistributeText(shuffledText); 
+            shuffledText = anagramText.ToCharArray().Shuffle();   //Shuffle() is a method in extended class for Char Array
+            DistributeText(shuffledText);   //Method to give one character each to all the boxes
         }
 
-        public void DistributeText(string text)
+        public void DistributeText(string text)     //Method to give one character each to all the boxes
         {
             int characters = text.Length;
-            NumberOfBoxes = characters;
+            NumberOfBoxes = characters;         //NumberOfBoxes is a property which gets/sets the numberBoxes Variable and remakes all the boxes
             char[] characterArray = text.ToCharArray();
             for(int i = 0; i < characters; i++)
             {
@@ -64,7 +64,7 @@ namespace AnagramBox
             }
         }
 
-       override public string Text
+       override public string Text              //Property to set the anagramText variable
         {
             get
             {
@@ -73,10 +73,10 @@ namespace AnagramBox
             set
             {
                 anagramText = value;
-                DistributeText(anagramText);
+                DistributeText(anagramText);    //Distributes the text among the boxes
             }
         }
-        public override Font Font
+        public override Font Font    //Property to set the Font of the Boxes
         {
             get
             {
@@ -93,14 +93,14 @@ namespace AnagramBox
 
 
 
-        private void AnagramBox_Resize(object sender, EventArgs e)
+        private void AnagramBox_Resize(object sender, EventArgs e)  //Resizes all the boxes when the Control is resized
         {
             size.Height = this.Size.Height;
             size.Width = this.Size.Width / numberBoxes;
             CreateBoxes();  
         }
 
-        public int NumberOfBoxes
+        public int NumberOfBoxes    //Property to set the numberBoxes variable
         {
             get
             {
@@ -114,9 +114,9 @@ namespace AnagramBox
         }
     }
 
-   public static class CharArrayExten
+   public static class CharArrayExten    //Extended class for Char Array
     {
-        public static string Shuffle(this char[] array)
+        public static string Shuffle(this char[] array)   //Shuffles all the characters in an array
         {
             var random = new Random();
             for (int x = 0; x < 100; x++)
