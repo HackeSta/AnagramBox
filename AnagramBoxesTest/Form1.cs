@@ -25,7 +25,7 @@ namespace AnagramBoxesTest
 
         private void button2_Click(object sender, EventArgs e)
         {
-            anagramBox.Shuffler();   //Shuffles the text
+            anagramBox.Shuffle();   //Shuffles the text
         }
 
         private void buttonUnShuffle_Click(object sender, EventArgs e)
