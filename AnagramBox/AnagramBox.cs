@@ -13,35 +13,41 @@ namespace AnagramBox
     public partial class AnagramBox: UserControl
     {
 
-       static int numberBoxes = 4;  //Default number of boxes
-        static Size size = new Size(20, 20);  //Default size of a box
+       static int defNumberBoxes = 4;  //Default number of boxes
+        static Size defSize = new Size(20, 20);  //Default size of a box
       static  RichTextBox[] textBoxes;     //Array of all boxes
+        static Font defFont = new Font("Microsoft Sans Serif", 20, FontStyle.Regular);  //Default Font
        static string anagramText, shuffledText;   //anagramText = Unscrambled, shuffledText = Scrambled
-        
+        static HorizontalAlignment defTextAlignment = HorizontalAlignment.Center;
+       
         
         public AnagramBox()
         {
             InitializeComponent();
-            this.Size = new Size(size.Width * numberBoxes, size.Height);   //Makes the size of the whole control equal to all boxes combined together
-           
+            this.Size = new Size(defSize.Width * defNumberBoxes, defSize.Height);   //Makes the size of the whole control equal to all boxes combined together
             CreateBoxes();   //Method to display all boxes
         }
 
+
+        
         public void CreateBoxes()   //Method to display all boxes
         {
             this.Controls.Clear();   //Removes all existing boxes
-            textBoxes = new RichTextBox[numberBoxes];           
-            size = new Size(this.Size.Width / numberBoxes, size.Height);        //Sets the size of each box so that they fit the control completely
-            for (int i = 0; i < numberBoxes; i++)                           //For loop to initialize all boxes
+            textBoxes = new RichTextBox[defNumberBoxes];           
+            defSize = new Size(this.Size.Width / defNumberBoxes, defSize.Height);        //Sets the size of each box so that they fit the control completely
+            for (int i = 0; i < defNumberBoxes; i++)                           //For loop to initialize all boxes
             {
                 textBoxes[i] = new RichTextBox();
-                textBoxes[i].Size = size;
+                
                 textBoxes[i].Visible = true;
                 textBoxes[i].MaxLength = 1;                 //We want one character in each box
                 textBoxes[i].ReadOnly = false;
-                textBoxes[i].Font = this.Font;
+                textBoxes[i].Font = defFont;
+                textBoxes[i].Size = defSize;
                 textBoxes[i].Multiline = false;
-                textBoxes[i].Location = new Point(i * size.Width, 0);
+                textBoxes[i].AutoSize = false;
+                
+                textBoxes[i].Location = new Point(i * defSize.Width, 0);
 
                 this.Controls.Add(textBoxes[i]);
             }
@@ -51,6 +57,12 @@ namespace AnagramBox
         {
             shuffledText = anagramText.ToCharArray().Shuffle();   //Shuffle() is a method in extended class for Char Array
             DistributeText(shuffledText);   //Method to give one character each to all the boxes
+
+        }
+
+        public void UnShuffle()  //Method to restore the original text
+        {
+            DistributeText(anagramText);
         }
 
         public void DistributeText(string text)     //Method to give one character each to all the boxes
@@ -61,7 +73,10 @@ namespace AnagramBox
             for(int i = 0; i < characters; i++)
             {
                 textBoxes[i].Text = characterArray[i].ToString();
+                textBoxes[i].SelectAll();
+                textBoxes[i].SelectionAlignment = defTextAlignment;
             }
+
         }
 
        override public string Text              //Property to set the anagramText variable
@@ -74,29 +89,42 @@ namespace AnagramBox
             {
                 anagramText = value;
                 DistributeText(anagramText);    //Distributes the text among the boxes
+               
             }
         }
-        public override Font Font    //Property to set the Font of the Boxes
+        public override Font Font   //Property to set the Font of the Boxes
         {
             get
             {
-                return base.Font;
+                return defFont;
             }
 
             set
             {
-                base.Font = value;
-                CreateBoxes();
+               defFont = value;
+                foreach (RichTextBox textbox in textBoxes) textbox.Font = defFont;
+
+            }
+        }
+
+        public HorizontalAlignment TextAlign //Sets text Alignment
+        {
+            get
+            {
+                return defTextAlignment;
+            }
+            set
+            {
+                defTextAlignment = value;
+                foreach (RichTextBox textbox in textBoxes) { textbox.SelectAll(); textbox.SelectionAlignment = defTextAlignment; } 
             }
         }
 
 
-
-
         private void AnagramBox_Resize(object sender, EventArgs e)  //Resizes all the boxes when the Control is resized
         {
-            size.Height = this.Size.Height;
-            size.Width = this.Size.Width / numberBoxes;
+            defSize.Height = this.Size.Height;
+            defSize.Width = this.Size.Width / defNumberBoxes;
             CreateBoxes();  
         }
 
@@ -104,11 +132,11 @@ namespace AnagramBox
         {
             get
             {
-                return numberBoxes;
+                return defNumberBoxes;
             }
             set
             {
-                numberBoxes = value;
+                defNumberBoxes = value;
                 CreateBoxes();
             }
         }
