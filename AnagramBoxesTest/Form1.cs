@@ -19,13 +19,28 @@ namespace AnagramBoxesTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            anagramBox1.Text = textBox1.Text;   //Sets the text in the control to the text in the TextBox
+            anagramBox.Text = pushBox.Text;   //Sets the text in the control to the text in the TextBox
             
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            anagramBox1.Shuffler();   //Shuffles the text
+            anagramBox.Shuffler();   //Shuffles the text
+        }
+
+        private void buttonUnShuffle_Click(object sender, EventArgs e)
+        {
+            anagramBox.UnShuffle(); //UnShuffles the text
+        }
+
+        private void buttonFont_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDialog = new FontDialog();
+            DialogResult result = fontDialog.ShowDialog();
+            if(result == DialogResult.OK)
+            {
+                anagramBox.Font = fontDialog.Font;
+            }
         }
     }
 }
