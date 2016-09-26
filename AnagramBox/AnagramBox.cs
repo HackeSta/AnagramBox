@@ -53,7 +53,7 @@ namespace AnagramBox
             }
         }
 
-        public void Shuffler()              //Method to shuffle the text
+        public void Shuffle()              //Method to shuffle the text
         {
             shuffledText = anagramText.ToCharArray().Shuffle();   //Shuffle() is a method in extended class for Char Array
             DistributeText(shuffledText);   //Method to give one character each to all the boxes
