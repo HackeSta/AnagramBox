@@ -32,8 +32,6 @@
             // 
             // AnagramBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "AnagramBox";
             this.Size = new System.Drawing.Size(283, 105);
             this.Resize += new System.EventHandler(this.AnagramBox_Resize);

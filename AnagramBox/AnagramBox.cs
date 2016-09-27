@@ -7,51 +7,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+ 
 namespace AnagramBox
 {
-    public partial class AnagramBox: UserControl
+    
+  
+    public partial class AnagramBox : UserControl
     {
-
-       static int defNumberBoxes = 4;  //Default number of boxes
-        static Size defSize = new Size(20, 20);  //Default size of a box
-      static  RichTextBox[] textBoxes;     //Array of all boxes
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //--------------------------------------DECLERATIONS---------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        static int defNumberBoxes = 6;  //Default number of boxes
+        static Size defSize = new Size(30, 30);  //Default size of a box
+        static TextBox[] textBoxes;     //Array of all boxes
         static Font defFont = new Font("Microsoft Sans Serif", 20, FontStyle.Regular);  //Default Font
-       static string anagramText, shuffledText;   //anagramText = Unscrambled, shuffledText = Scrambled
+        static string anagramText, shuffledText;  //anagramText = Unscrambled, shuffledText = Scrambled
         static HorizontalAlignment defTextAlignment = HorizontalAlignment.Center;
-       
-        
+        Color defBoxColor = Color.White, defTextColor = Color.Black;
+        CurrentText currentText;
+
         public AnagramBox()
         {
             InitializeComponent();
             this.Size = new Size(defSize.Width * defNumberBoxes, defSize.Height);   //Makes the size of the whole control equal to all boxes combined together
+            this.SetAutoSizeMode(AutoSizeMode.GrowAndShrink);
+            
             CreateBoxes();   //Method to display all boxes
         }
 
+        enum CurrentText    //Stores the type of text in the box
+        {
+            anagramText, shuffledText
+        }
 
-        
         public void CreateBoxes()   //Method to display all boxes
         {
             this.Controls.Clear();   //Removes all existing boxes
-            textBoxes = new RichTextBox[defNumberBoxes];           
-            defSize = new Size(this.Size.Width / defNumberBoxes, defSize.Height);        //Sets the size of each box so that they fit the control completely
+            textBoxes = new TextBox[defNumberBoxes];
             for (int i = 0; i < defNumberBoxes; i++)                           //For loop to initialize all boxes
             {
-                textBoxes[i] = new RichTextBox();
-                
+                textBoxes[i] = new TextBox();
+
                 textBoxes[i].Visible = true;
                 textBoxes[i].MaxLength = 1;                 //We want one character in each box
                 textBoxes[i].ReadOnly = false;
                 textBoxes[i].Font = defFont;
                 textBoxes[i].Size = defSize;
                 textBoxes[i].Multiline = false;
-                textBoxes[i].AutoSize = false;
-                
+                textBoxes[i].AutoSize = true;
+                textBoxes[i].BackColor = defBoxColor;
+                textBoxes[i].ForeColor = defTextColor;
                 textBoxes[i].Location = new Point(i * defSize.Width, 0);
-
+                textBoxes[i].Multiline = false;
+               
                 this.Controls.Add(textBoxes[i]);
             }
+            switch (currentText)            //Checks for the type of text in box before the method was called
+            {
+                case CurrentText.anagramText:
+                    DistributeText(anagramText, false);
+                    break;
+                case CurrentText.shuffledText:
+                    DistributeText(shuffledText, false);
+                    break;
+                default:
+                    break;
+            }
         }
+
+      
 
         public void Shuffle()              //Method to shuffle the text
         {
@@ -65,21 +91,41 @@ namespace AnagramBox
             DistributeText(anagramText);
         }
 
-        public void DistributeText(string text)     //Method to give one character each to all the boxes
+        public void DistributeText(string text, bool createBoxes = true)     //Method to give one character each to all the boxes, createBoxes(default = true) indicates whether to recreate the boxes or not, false when called by CreateBoxes() to avoid loop
         {
-            int characters = text.Length;
-            NumberOfBoxes = characters;         //NumberOfBoxes is a property which gets/sets the numberBoxes Variable and remakes all the boxes
-            char[] characterArray = text.ToCharArray();
-            for(int i = 0; i < characters; i++)
+            if (text == anagramText) currentText = CurrentText.anagramText;
+            else if (text == shuffledText) currentText = CurrentText.shuffledText;
+
+            if (!String.IsNullOrEmpty(text))
             {
-                textBoxes[i].Text = characterArray[i].ToString();
-                textBoxes[i].SelectAll();
-                textBoxes[i].SelectionAlignment = defTextAlignment;
+                int characters = text.Length;
+               if(createBoxes) NumberOfBoxes = characters;         //NumberOfBoxes is a property which gets/sets the numberBoxes Variable and remakes all the boxes
+                char[] characterArray = text.ToCharArray();
+                for (int i = 0; i < characters; i++)
+                {
+                    textBoxes[i].Text = characterArray[i].ToString();
+                    textBoxes[i].SelectAll();
+                    textBoxes[i].TextAlign = defTextAlignment;
+                }
+            }
+            else
+            {
+                if (createBoxes) NumberOfBoxes = defNumberBoxes;
             }
 
         }
 
-       override public string Text              //Property to set the anagramText variable
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //--------------------------------------PROPERTIES-----------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        public override string Text              //Property to set the anagramText variable
         {
             get
             {
@@ -88,8 +134,9 @@ namespace AnagramBox
             set
             {
                 anagramText = value;
+                
                 DistributeText(anagramText);    //Distributes the text among the boxes
-               
+
             }
         }
         public override Font Font   //Property to set the Font of the Boxes
@@ -101,9 +148,10 @@ namespace AnagramBox
 
             set
             {
-               defFont = value;
-                foreach (RichTextBox textbox in textBoxes) textbox.Font = defFont;
-
+                defFont =  value;
+                foreach (TextBox textbox in textBoxes) textbox.Font = defFont;
+                CreateBoxes();
+               
             }
         }
 
@@ -116,19 +164,15 @@ namespace AnagramBox
             set
             {
                 defTextAlignment = value;
-                foreach (RichTextBox textbox in textBoxes) { textbox.SelectAll(); textbox.SelectionAlignment = defTextAlignment; } 
+
+                foreach (TextBox textbox in textBoxes) { textbox.SelectAll(); textbox.TextAlign = defTextAlignment; }
             }
         }
 
 
-        private void AnagramBox_Resize(object sender, EventArgs e)  //Resizes all the boxes when the Control is resized
-        {
-            defSize.Height = this.Size.Height;
-            defSize.Width = this.Size.Width / defNumberBoxes;
-            CreateBoxes();  
-        }
 
-        public int NumberOfBoxes    //Property to set the numberBoxes variable
+
+        private int NumberOfBoxes    //Property to set the numberBoxes variable
         {
             get
             {
@@ -140,9 +184,57 @@ namespace AnagramBox
                 CreateBoxes();
             }
         }
+       public Color BoxColor   //Property to set background color
+        {
+            get
+            {
+                return defBoxColor;
+            }
+            set
+            {
+                defBoxColor = value;
+                foreach (TextBox textbox in textBoxes) textbox.BackColor = value;
+            }
+        }
+
+        public Color TextColor  //Property to set text font color
+        {
+            get
+            {
+                return defTextColor;
+            }
+
+            set
+            {
+                defTextColor = value;
+                foreach (TextBox textbox in textBoxes) textbox.ForeColor = value;
+            }
+        }
+     
+
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //--------------------------------------EVENTS---------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+
+        private void AnagramBox_Resize(object sender, EventArgs e)  //Resizes all the boxes when the Control is resized
+        {
+            defSize.Height = this.Size.Height;
+             defSize.Width = this.Size.Width / defNumberBoxes;
+            this.Size = new Size(defSize.Width * defNumberBoxes, defSize.Height);
+            CreateBoxes();
+        }
     }
 
-   public static class CharArrayExten    //Extended class for Char Array
+    //-----------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    //--------------------------------------EXTENSIONS-----------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+
+
+    public static class CharArrayExten    //Extended class for Char Array
     {
         public static string Shuffle(this char[] array)   //Shuffles all the characters in an array
         {

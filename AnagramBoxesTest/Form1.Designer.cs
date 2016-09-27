@@ -33,7 +33,7 @@
             this.pushBox = new System.Windows.Forms.TextBox();
             this.buttonUnShuffle = new System.Windows.Forms.Button();
             this.buttonFont = new System.Windows.Forms.Button();
-            this.anagramBox = new AnagramBox.AnagramBox();
+            this.anagramBox1 = new AnagramBox.AnagramBox();
             this.SuspendLayout();
             // 
             // buttonPush
@@ -58,10 +58,11 @@
             // 
             // pushBox
             // 
-            this.pushBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pushBox.Location = new System.Drawing.Point(182, 166);
+            this.pushBox.BackColor = System.Drawing.Color.White;
+            this.pushBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.pushBox.Location = new System.Drawing.Point(118, 166);
             this.pushBox.Name = "pushBox";
-            this.pushBox.Size = new System.Drawing.Size(100, 20);
+            this.pushBox.Size = new System.Drawing.Size(191, 38);
             this.pushBox.TabIndex = 5;
             // 
             // buttonUnShuffle
@@ -84,21 +85,24 @@
             this.buttonFont.UseVisualStyleBackColor = true;
             this.buttonFont.Click += new System.EventHandler(this.buttonFont_Click);
             // 
-            // anagramBox
+            // anagramBox1
             // 
-            this.anagramBox.Location = new System.Drawing.Point(69, 57);
-            this.anagramBox.Name = "anagramBox";
-            this.anagramBox.NumberOfBoxes = 6;
-            this.anagramBox.Size = new System.Drawing.Size(339, 58);
-            this.anagramBox.TabIndex = 9;
-            this.anagramBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.anagramBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.anagramBox1.BoxColor = System.Drawing.Color.White;
+            this.anagramBox1.Location = new System.Drawing.Point(60, 29);
+            this.anagramBox1.Name = "anagramBox1";
+            this.anagramBox1.Size = new System.Drawing.Size(284, 284);
+            this.anagramBox1.TabIndex = 9;
+            this.anagramBox1.Text = "anagramBox1";
+            this.anagramBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.anagramBox1.TextColor = System.Drawing.Color.Black;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(495, 347);
-            this.Controls.Add(this.anagramBox);
+            this.Controls.Add(this.anagramBox1);
             this.Controls.Add(this.buttonFont);
             this.Controls.Add(this.buttonUnShuffle);
             this.Controls.Add(this.pushBox);
@@ -117,7 +121,7 @@
         private System.Windows.Forms.TextBox pushBox;
         private System.Windows.Forms.Button buttonUnShuffle;
         private System.Windows.Forms.Button buttonFont;
-        private AnagramBox.AnagramBox anagramBox;
+        private AnagramBox.AnagramBox anagramBox1;
     }
 }
 
