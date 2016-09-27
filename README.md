@@ -20,6 +20,6 @@ Property to change the ForeColor/FontColor
 Property to change the BackColor
 
 
-## To-DO List
-- [] Fix resize bug
-- [] Hide unnesseccary properties
+## To-Do List
+- [ ] Fix resize bug
+- [ ] Hide unnesseccary properties
