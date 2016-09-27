@@ -5,4 +5,10 @@ More features coming soon.
 
 ## Custom Methods
 ###### Shuffle()
-This method shuffles all the text, will add UnShuffle() soon
+This method shuffles all the text
+
+###### UnShuffle
+This method unshuffles all the text
+
+###### TextAlign
+Property to change HorizontalAlignment of all boxes
