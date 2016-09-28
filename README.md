@@ -21,5 +21,5 @@ Property to change the BackColor
 
 
 ## To-Do List
-- [ ] Fix resize bug
+- [x] Fix resize bug
 - [ ] Hide unnesseccary properties
