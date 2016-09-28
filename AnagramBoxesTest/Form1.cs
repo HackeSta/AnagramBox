@@ -20,7 +20,7 @@ namespace AnagramBoxesTest
         private void button1_Click(object sender, EventArgs e)
         {
             anagramBox1.Text = pushBox.Text;   //Sets the text in the control to the text in the TextBox
-            
+         
         }
 
         private void button2_Click(object sender, EventArgs e)

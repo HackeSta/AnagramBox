@@ -89,9 +89,9 @@
             // 
             this.anagramBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.anagramBox1.BoxColor = System.Drawing.Color.White;
-            this.anagramBox1.Location = new System.Drawing.Point(60, 29);
+            this.anagramBox1.Location = new System.Drawing.Point(28, 50);
             this.anagramBox1.Name = "anagramBox1";
-            this.anagramBox1.Size = new System.Drawing.Size(284, 284);
+            this.anagramBox1.Size = new System.Drawing.Size(726, 60);
             this.anagramBox1.TabIndex = 9;
             this.anagramBox1.Text = "anagramBox1";
             this.anagramBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

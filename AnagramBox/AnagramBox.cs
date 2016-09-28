@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
- 
+using System.Windows.Forms.Design;
 namespace AnagramBox
 {
-    
-  
+
+    [Designer(typeof(AnagramBoxDesigner))]
     public partial class AnagramBox : UserControl
     {
         //-----------------------------------------------------------------------------------------------
@@ -35,6 +35,7 @@ namespace AnagramBox
             this.SetAutoSizeMode(AutoSizeMode.GrowAndShrink);
             
             CreateBoxes();   //Method to display all boxes
+            FixSize();
         }
 
         enum CurrentText    //Stores the type of text in the box
@@ -75,6 +76,7 @@ namespace AnagramBox
                 default:
                     break;
             }
+            
         }
 
       
@@ -112,7 +114,12 @@ namespace AnagramBox
             {
                 if (createBoxes) NumberOfBoxes = defNumberBoxes;
             }
+            FixSize();
+        }
 
+        private void FixSize()  //Makes the control size equal to that occupied by the text boxes
+        {
+            this.Size = new Size(textBoxes[0].Width * defNumberBoxes, textBoxes[0].Size.Height);
         }
 
         //-----------------------------------------------------------------------------------------------
@@ -151,7 +158,7 @@ namespace AnagramBox
                 defFont =  value;
                 foreach (TextBox textbox in textBoxes) textbox.Font = defFont;
                 CreateBoxes();
-               
+                FixSize();
             }
         }
 
@@ -220,8 +227,8 @@ namespace AnagramBox
 
         private void AnagramBox_Resize(object sender, EventArgs e)  //Resizes all the boxes when the Control is resized
         {
-            defSize.Height = this.Size.Height;
-             defSize.Width = this.Size.Width / defNumberBoxes;
+            
+            defSize = new Size(this.Size.Width / defNumberBoxes, this.Size.Height);
             this.Size = new Size(defSize.Width * defNumberBoxes, defSize.Height);
             CreateBoxes();
         }
@@ -255,5 +262,16 @@ namespace AnagramBox
             return s;
         }
 
+    }
+
+    public class AnagramBoxDesigner : ControlDesigner
+    {
+        public override SelectionRules SelectionRules
+        {
+            get
+            {
+                return base.SelectionRules & ~(SelectionRules.BottomSizeable | SelectionRules.TopSizeable);
+            }
+        }
     }
 }
