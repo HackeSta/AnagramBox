@@ -12,3 +12,14 @@ This method unshuffles all the text
 
 ###### TextAlign
 Property to change HorizontalAlignment of all boxes
+
+###### TextColor
+Property to change the ForeColor/FontColor
+
+###### BoxColor
+Property to change the BackColor
+
+
+## To-Do List
+- [ ] Fix resize bug
+- [ ] Hide unnesseccary properties
